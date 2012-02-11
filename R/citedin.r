@@ -1,14 +1,16 @@
 #' Get CitedIn data for a given PubMed ID.
+#' @import RCurl XML plyr
 #' @param pmid PubMed ID of the article.
-#' @param df print data.frame (TRUE), or list (FALSE).
+#' @param df print data.frame (TRUE), or list (FALSE - default).
 #' @param url The base CitedIn url (should be left to default)
 #' @param ... optional additional curl options (debugging tools mostly)
 #' @param curl If using in a loop, call getCurlHandle() first and pass 
 #'  the returned value in here (avoids unnecessary footprint)
-#' @return List of .
+#' @return Data.frame or list of citations of the PubMed ID.
 #' @export
 #' @examples \dontrun{
-#' citedin(15489334)
+#' citedin(15489334, df = TRUE)
+#' citedin(15489331)
 #' }
 citedin <- 
 function(pmid = NA, df = FALSE,
@@ -33,4 +35,3 @@ function(pmid = NA, df = FALSE,
   }
   if(df == TRUE){ldply(tt, func)} else {tt}
 }
-# http://www.citedin.org/webservice.php/citations?pmid=15489334&format=json

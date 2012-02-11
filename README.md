@@ -1,4 +1,4 @@
-# `raltmet` #
+# raltmet #
 
 Install using install_github within Hadley's devtools package.
 
