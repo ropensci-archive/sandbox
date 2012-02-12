@@ -16,3 +16,5 @@ Depends:
 Collate:
     'citedin.r'
     'altmet_doi.r'
+    'totimp.r'
+    'totimp_dryad.r'

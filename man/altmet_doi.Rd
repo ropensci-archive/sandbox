@@ -38,6 +38,7 @@
 \dontrun{
 altmet_doi('10.1038/480426a', df = TRUE)
 altmet_doi('10.1038/480426a')
+altmet_doi("10.1111/j.1365-2745.2006.01176.x") # doesn't work
 }
 }
 
