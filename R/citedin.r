@@ -12,8 +12,7 @@
 #' citedin(15489334, df = TRUE)
 #' citedin(15489331)
 #' }
-citedin <- 
-function(pmid = NA, df = FALSE,
+citedin <- function(pmid = NA, df = FALSE,
          url = "http://www.citedin.org/webservice.php/citations",
          ...,
          curl = getCurlHandle()){

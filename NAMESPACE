@@ -1,4 +1,6 @@
+export(altmet_doi)
 export(citedin)
 import(RCurl)
+import(RJSONIO)
 import(XML)
 import(plyr)

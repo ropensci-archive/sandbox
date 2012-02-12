@@ -15,3 +15,4 @@ Depends:
     plyr
 Collate:
     'citedin.r'
+    'altmet_doi.r'
