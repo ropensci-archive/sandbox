@@ -4,6 +4,7 @@
 \usage{
   altmet_doi(doi = NA, df = FALSE,
     url = "http://api.altmetric.com/v1/doi/",
+    key = getOption("altmetriccom", stop("need an API key for Altmetric.com")),
     bitlyusername = getOption("bitlyusername", stop("need a username for Bit.ly")),
     bitlykey = getOption("bitlykey", stop("need an API key for Bit.ly")),
     ..., curl = getCurlHandle())
@@ -16,6 +17,8 @@
 
   \item{url}{The base CitedIn url (should be left to
   default)}
+
+  \item{key}{Your Altmetric.com API key.}
 
   \item{bitlyusername}{Your bit.ly username.}
 

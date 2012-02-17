@@ -3,6 +3,7 @@
 #' @param doi DOI of the article.
 #' @param df print data.frame (TRUE), or list (FALSE - default).
 #' @param url The base CitedIn url (should be left to default)
+#' @param key Your Altmetric.com API key.
 #' @param bitlyusername Your bit.ly username. 
 #' @param bitlykey Your bit.ly API key. 
 #' @param ... optional additional curl options (debugging tools mostly)
@@ -18,6 +19,7 @@
 altmet_doi <- 
 function(doi = NA, df = FALSE,
         url = "http://api.altmetric.com/v1/doi/",
+        key = getOption("altmetriccom", stop("need an API key for Altmetric.com")),
         bitlyusername = getOption("bitlyusername", stop("need a username for Bit.ly")),
         bitlykey = getOption("bitlykey", stop("need an API key for Bit.ly")),
         ...,

@@ -1,5 +1,6 @@
 export(altmet_doi)
 export(citedin)
+export(github)
 export(totimp)
 export(totimp_dryad)
 import(RCurl)
