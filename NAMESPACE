@@ -1,4 +1,6 @@
-export(altmet_doi)
+export(altmetcom)
+export(bitly_clicks)
+export(bitly_shorten)
 export(citedin)
 export(github)
 export(totimp)

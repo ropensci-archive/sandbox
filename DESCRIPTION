@@ -1,11 +1,11 @@
 Package: raltmet
-Version: 0.1
-Date: 2012-2-10
+Version: 0.0.1
+Date: 2012-04-02
 Description: Programmatic interfaces to the
     many altmetric data services on journal article
     impacts.
 Title: Interface altmetric data services
-License: BSD
+License: C00
 Author: Scott Chamberlain
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 URL: https://github.com/ropensci/raltmet
@@ -16,7 +16,9 @@ Depends:
     RJSONIO
 Collate:
     'citedin.r'
-    'altmet_doi.r'
     'totimp.r'
     'totimp_dryad.r'
     'github.r'
+    'altmetcom.r'
+    'bitly_clicks.r'
+    'bitly_shorten.r'
