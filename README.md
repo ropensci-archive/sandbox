@@ -5,7 +5,7 @@ Install using install_github within Hadley's devtools package.
 ```R
 install.packages("devtools")
 require(devtools)
-install_github("raltmet", "rOpenSci")
+install_github("raltmet", "ropensci")
 require(raltmet)
 ```
 
@@ -18,3 +18,4 @@ This set of functions/package will access altmetics data from the following:
 * [GitHub](http://github.com/) - [API documentation](http://developer.github.com/) - Get metrics on code repositories, including forks, watchers, and open issues. 
 * [Bit.ly](https://bitly.com/) - [API documentation](http://code.google.com/p/bitly-api/wiki/ApiDocumentation) - Get clicks on bit.ly short URLs and shorten long URLs - further functions to come. 
 * [G+](https://plus.google.com/) - [API documentation](https://developers.google.com/+/) - Get user posts, comments, search terms, etc.  
+* [Digg](http://digg.com/) - [API documentation](http://developers.digg.com/documentation) - Get metrics on Digg users, including diggs, comments, followers, following, and submissions.  
