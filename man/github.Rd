@@ -13,7 +13,7 @@
   \item{url}{The base GitHub url (leave to default).}
 }
 \value{
-  XXXXXXXX.
+  json output.
 }
 \description{
   Get GitHub metrics on a user or organization's
@@ -24,7 +24,7 @@
 github(userorg = 'ropensci', repo = 'rmendeley')
 github(userorg = 'hadley', repo = 'ggplot2')
 github(userorg = 'hadley', repo = 'ggplot2', 'allstats')
-github(userorg = 'hadley', repo = 'ggplot2', 'forks')
+github(userorg = 'hadley', repo = 'ggplot2', return_ = 'forks')
 }
 }
 

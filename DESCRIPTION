@@ -22,3 +22,5 @@ Collate:
     'altmetcom.r'
     'bitly_clicks.r'
     'bitly_shorten.r'
+    'digg_user.r'
+    'gplus.r'
