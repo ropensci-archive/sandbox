@@ -19,3 +19,4 @@ This set of functions/package will access altmetics data from the following:
 * [Bit.ly](https://bitly.com/) - [API documentation](http://code.google.com/p/bitly-api/wiki/ApiDocumentation) - Get clicks on bit.ly short URLs and shorten long URLs - further functions to come. 
 * [G+](https://plus.google.com/) - [API documentation](https://developers.google.com/+/) - Get user posts, comments, search terms, etc.  
 * [Digg](http://digg.com/) - [API documentation](http://developers.digg.com/documentation) - Get metrics on Digg users, including diggs, comments, followers, following, and submissions.  
+* [Stackoverflow](http://stackoverflow.com/) - [API documentation](https://api.stackexchange.com/docs) - Get reputation score(s) on a single or many user ID(s).  
