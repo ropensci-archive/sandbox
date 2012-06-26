@@ -20,3 +20,4 @@ This set of functions/package will access altmetics data from the following:
 * [G+](https://plus.google.com/) - [API documentation](https://developers.google.com/+/) - Get user posts, comments, search terms, etc.  
 * [Digg](http://digg.com/) - [API documentation](http://developers.digg.com/documentation) - Get metrics on Digg users, including diggs, comments, followers, following, and submissions.  
 * [Stackoverflow](http://stackoverflow.com/) - [API documentation](https://api.stackexchange.com/docs) - Get reputation score(s) on a single or many user ID(s).  
+* [Disqus](http://disqus.com/) - [API documentation](http://disqus.com/api/docs/) -  Get metrics on comments on posts, etc.

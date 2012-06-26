@@ -16,7 +16,7 @@
 }
 \examples{
 \dontrun{
-stackexchange(1091766) # one user ID
+stackexchange(userid=1091766) # one user ID
 stackexchange(userid="1091766;258662") # many user IDs
 stackexchange(userid="1091766;258662;1097181;1033896;1207152") # lots of user IDs
 }

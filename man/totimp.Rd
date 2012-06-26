@@ -22,8 +22,8 @@
 \examples{
 \dontrun{
 totimp(id = '10.5061/dryad.8671')
-totimp(id = '10.5061/dryad.8671', 'biblio')
-totimp(id = list('10.5061/dryad.8671','18428094','http://opensciencesummit.com/program/'), 'biblio')
+totimp(id = '10.5061/dryad.8654', 'biblio')
+totimp(id = list('10.5061/dryad.8671','18428094','http://opensciencesummit.com/program/'), 'metrics')
 totimp(id = '18428094', 'biblio')
 }
 }

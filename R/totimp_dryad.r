@@ -13,7 +13,7 @@
 #' totimp_dryad(id = list('10.5061/dryad.8671', '10.5061/dryad.8908'))
 #' }
 
-totimp_dryad <-function(id = NA, sleep = 0,url = "http://total-impact.org/api/v1/items/") {
+totimp_dryad <-function(id = NA, sleep = 0, url = "http://total-impact-core.herokuapp.com/item/") {
 
   Sys.sleep(sleep)
 

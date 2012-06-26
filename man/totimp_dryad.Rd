@@ -3,7 +3,7 @@
 \title{Get Dryad metrics from Total Impact (http://totalimpact.org/) API.}
 \usage{
   totimp_dryad(id = NA, sleep = 0,
-    url = "http://total-impact.org/api/v1/items/")
+    url = "http://total-impact-core.herokuapp.com/item/")
 }
 \arguments{
   \item{id}{The Dryad identifier - see examples.}

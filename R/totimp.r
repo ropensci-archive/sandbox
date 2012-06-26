@@ -1,4 +1,5 @@
 #' Get Total Impact (http://totalimpact.org/) metrics or bibliography on a paper.
+#' 
 #' @import stringr RJSONIO plyr
 #' @param id The DOI, URL, or PubMed ID - see examples.
 #' @param fields One of 'metrics' or 'biblio'.
@@ -7,12 +8,15 @@
 #' @export
 #' @examples \dontrun{
 #' totimp(id = '10.5061/dryad.8671')
-#' totimp(id = '10.5061/dryad.8671', 'biblio')
-#' totimp(id = list('10.5061/dryad.8671','18428094','http://opensciencesummit.com/program/'), 'biblio')
+#' totimp(id = '10.5061/dryad.8654', 'biblio')
+#' totimp(id = list('10.5061/dryad.8671','18428094','http://opensciencesummit.com/program/'), 'metrics')
 #' totimp(id = '18428094', 'biblio')
 #' }
 totimp <- function(id = NA, fields = 'metrics', sleep = 0,
-         url = "http://total-impact.org/api/v1/items/") {
+         url = "http://total-impact.org/api/v1/items/") 
+{
+  getURL("http://total-impact-core.herokuapp.com/tiid/doi/10.1371/journal.pcbi.1000361")
+  fromJSON(getURL("http://total-impact-core.herokuapp.com/item/1b2f4fc2bea711e1bdf912313d1a5e63"))
   Sys.sleep(sleep)
   id_ <- paste(
               laply(id, str_replace_all, pattern='/', replacement='%252F'),
