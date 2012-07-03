@@ -15,11 +15,10 @@
 #' @return Stackoverflow reputation score(s).
 #' @export
 #' @examples \dontrun{
-#' stackexchange(ids = 1091766, order = "desc", sort = "reputation") # one user ID
-#' stackexchange(ids="1091766;258662") # many user IDs
-#' stackexchange(ids="1091766;258662;1097181;1033896;1207152") # lots of user IDs
-#' stackexchange(ids="1091766;258662;1097181;1033896;1207152", sort="name") # with other parameters used
-#' stackexchange() # with other parameters used
+#' stackexchange(ids = 16632) # one user ID
+#' stackexchange(ids="16632;258662") # many user IDs
+#' stackexchange(ids="16632;258662;1097181;1033896;1207152") # lots of user IDs
+#' stackexchange(ids="16632;258662;1097181;1033896;1207152", sort="name") # using other parameters
 #' }
 stackexchange <- function(page = NA, pagesize = NA, fromdate = NA, todate = NA, 
     order = NA, min = NA, max = NA, sort = NA, ids,
