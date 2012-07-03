@@ -1,28 +1,40 @@
 #' Stackoverflow reputation score.
 #' 
 #' Get Stackoverflow reputation score for a given user ID.
-#' @import RCurl RJSONIO plyr
-#' @param userid Stackexchange user ID. Can contain up to 100 semicolon delimited ids.
+#' @import RCurl RJSONIO plyr R.utils
+#' @param page Page to return.
+#' @param pagesize Number of items per page to return.
+#' @param fromdate Date to start from.
+#' @param todate Date to end at.
+#' @param order One of "descending" or "ascending".
+#' @param min Minimum XXX.
+#' @param max Maximum XXX.
+#' @param sort One of "reputation" (default), "creation", "name", or "modified".
+#' @param ids Stackexchange user ID. Can contain up to 100 semicolon delimited ids.
+#' @param url The base url for Stackexchange.
 #' @return Stackoverflow reputation score(s).
 #' @export
 #' @examples \dontrun{
-#' stackexchange(userid=1091766) # one user ID
-#' stackexchange(userid="1091766;258662") # many user IDs
-#' stackexchange(userid="1091766;258662;1097181;1033896;1207152") # lots of user IDs
+#' stackexchange(ids = 1091766, order = "desc", sort = "reputation") # one user ID
+#' stackexchange(ids="1091766;258662") # many user IDs
+#' stackexchange(ids="1091766;258662;1097181;1033896;1207152") # lots of user IDs
+#' stackexchange(ids="1091766;258662;1097181;1033896;1207152", sort="name") # with other parameters used
+#' stackexchange() # with other parameters used
 #' }
-stackexchange <- function(userid)
+stackexchange <- function(page = NA, pagesize = NA, fromdate = NA, todate = NA, 
+    order = NA, min = NA, max = NA, sort = NA, ids,
+    url = "https://api.stackexchange.com/2.0/users/")
 {
-  url <- "https://api.stackexchange.com/2.0/users/"
-  url2 <- paste(url, userid, "?site=stackoverflow", sep='')
-  header = dynCurlReader()
-  curlPerform(url = url2, headerfunction = header$update, curl = header$curl())
-  tt <- gunzip(header$value())
-  reps <- laply(fromJSON(tt)[[1]], function(x) x$reputation)
-  users <- laply(fromJSON(tt)[[1]], 
-                 function(x) paste(x$user_id, x$display_name, sep="/"))
-  names(reps) <- users
-  reps
+  if(!is.na(page)){ page <- paste("&page=", page, sep="") } else { page <- NULL }
+  if(!is.na(pagesize)){ pagesize <- paste("&pagesize=", pagesize, sep="") } else { pagesize <- NULL }
+  if(!is.na(fromdate)){ fromdate <- paste("&fromdate=", fromdate, sep="") } else { fromdate <- NULL }
+  if(!is.na(todate)){ todate <- paste("&todate=", todate, sep="") } else { todate <- NULL }
+  if(!is.na(order)){ order <- paste("&order=", order, sep="") } else { order <- NULL }
+  if(!is.na(min)){ min <- paste("&min=", min, sep="") } else { min <- NULL }
+  if(!is.na(max)){ max <- paste("&max=", max, sep="") } else { max <- NULL }
+  if(!is.na(sort)){ sort <- paste("&sort=", sort, sep="") } else { sort <- NULL }
+  url2 <- paste(url, ids, "?site=stackoverflow", page, pagesize, fromdate, 
+      todate, order, min, max, sort, sep="")
+  tt <- getURL(url2, .opts=list(encoding="identity,gzip")) 
+  laply(fromJSON(tt)[[1]], function(x) c(id=x$user_id, name=x$display_name, reputation=x$reputation, badge=x$badge_counts))
 }
-
-# source("http://bioconductor.org/biocLite.R")
-# biocLite("GEOquery")

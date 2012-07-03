@@ -14,7 +14,6 @@ bitly_clicks <- function(bitlyurl,
 {
   out <- fromJSON(getURL(paste(
     "https://api-ssl.bitly.com/v3/clicks?login=", bitlyusername, "&apiKey=",
-    bitlykey, "&shortUrl=", bitlyurl, "&format=json", sep=''),
-    ssl.verifypeer = FALSE))
+    bitlykey, "&shortUrl=", bitlyurl, "&format=json", sep='')))
   c(out$data$clicks[[1]][3], out$data$clicks[[1]][5])
 }
