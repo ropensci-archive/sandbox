@@ -35,5 +35,45 @@ stackexchange <- function(page = NA, pagesize = NA, fromdate = NA, todate = NA,
   url2 <- paste(url, ids, "?site=stackoverflow", page, pagesize, fromdate, 
       todate, order, min, max, sort, sep="")
   tt <- getURL(url2, .opts=list(encoding="identity,gzip")) 
-  laply(fromJSON(tt)[[1]], function(x) c(id=x$user_id, name=x$display_name, reputation=x$reputation, badge=x$badge_counts))
+  fromJSON(tt)[[1]]
+#   laply(fromJSON(tt)[[1]], function(x) c(id=x$user_id, name=x$display_name, reputation=x$reputation, badge=x$badge_counts))
 }
+
+
+library(httr); library(plyr)
+# stackexchange(ids = "16632;258662")
+stackexchange_ <- function(page = NULL, pagesize = NULL, fromdate = NULL, 
+    todate = NULL, order = NULL, min = NULL, max = NULL, sort = NULL, ids,
+    url = "https://api.stackexchange.com/2.0/users/")
+{
+  query <- compact(list(page = page, pagesize = pagesize, fromdate = fromdate, 
+    todate = todate, order = order, min = min, max = max, sort = sort, 
+    site = "stackoverflow"))
+  res <- GET(paste0(url, ids), query = query)
+  json <- parsed_content(res)
+  json
+#   lapply(json$items, "[", 
+#          c("user_id", "display_name", "reputation", "badge_counts"))
+}
+
+stackexchange__ <- function(page = NULL, pagesize = NULL, fromdate = NULL, 
+    todate = NULL, order = NULL, min = NULL, max = NULL, sort = NULL, ids,
+    url = "https://api.stackexchange.com/2.0/users/")
+{
+#   query <- compact(list(page = page, pagesize = pagesize, fromdate = fromdate, 
+#     todate = todate, order = order, min = min, max = max, sort = sort, 
+#     site = "stackoverflow"))
+  url2 <- paste(url, ids, "?site=stackoverflow", sep="")
+  res <- getURL(url2, .opts=list(encoding="identity,gzip"))
+  fromJSON(res)[[1]]
+  #   lapply(json$items, "[", 
+  #          c("user_id", "display_name", "reputation", "badge_counts"))
+}
+
+system.time( stackexchange_(ids = "16632") )
+system.time( stackexchange(ids = "16632") )
+system.time( stackexchange__(ids = "16632") )
+
+system.time( stackexchange(ids = "16632;258662;1097181;1033896;1207152;1207153;1207154;1207155;1207156") )
+system.time( llply(list(16632, 258662, 1097181, 1033896, 1207152, 1207153, 1207154, 1207155, 1207156), function(x) stackexchange_(ids=x)) )
+system.time( stackexchange__(ids = "16632;258662;1097181;1033896;1207152;1207153;1207154;1207155;1207156") )

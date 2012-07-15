@@ -1,4 +1,5 @@
 #' Get Bit.ly clicks for a given URL.
+#' 
 #' @import RCurl RJSONIO
 #' @param bitlyurl The bit.ly short URL.
 #' @param bitlyusername Your bit.ly username. 
