@@ -15,8 +15,8 @@
 totimp <- function(id = NA, fields = 'metrics', sleep = 0,
          url = "http://total-impact.org/api/v1/items/") 
 {
-  getURL("http://total-impact-core.herokuapp.com/tiid/doi/10.1371/journal.pcbi.1000361")
-  fromJSON(getURL("http://total-impact-core.herokuapp.com/item/1b2f4fc2bea711e1bdf912313d1a5e63"))
+#   getURL("http://total-impact-core.herokuapp.com/tiid/doi/10.1371/journal.pcbi.1000361")
+#   fromJSON(getURL("http://total-impact-core.herokuapp.com/item/1b2f4fc2bea711e1bdf912313d1a5e63"))
   Sys.sleep(sleep)
   id_ <- paste(
               laply(id, str_replace_all, pattern='/', replacement='%252F'),
