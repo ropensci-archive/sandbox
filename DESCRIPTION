@@ -24,7 +24,6 @@ Collate:
     'bitly_shorten.r'
     'digg_user.r'
     'gplus.r'
-    'stackexchange.r'
     'bitly_expand.r'
     'disqus.r'
     'totimp_getid.r'

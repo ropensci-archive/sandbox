@@ -24,7 +24,7 @@
 }
 \examples{
 \dontrun{
-disqus()
+disqus(method = 'users', parameter = 'listPosts', user = 400)
 }
 }
 

@@ -9,7 +9,7 @@
 #' @return json output.
 #' @export
 #' @examples \dontrun{
-#' disqus()
+#' disqus(method = 'users', parameter = 'listPosts', user = 400)
 #' }
 disqus <- function(query = NA, parameter = NA, method = NA, 
   url = "http://disqus.com/api/3.0",

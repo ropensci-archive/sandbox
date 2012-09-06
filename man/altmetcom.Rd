@@ -14,7 +14,7 @@
   (article DOI), 'pmid' (PubMed ID), or 'arxiv' (arXiv
   ID).}
 
-  \item{id}{ID of the article.}
+  \item{articleid}{ID of the article.}
 
   \item{all}{print all results (TRUE - default), or not
   (FALSE).}
@@ -44,6 +44,7 @@
 \examples{
 \dontrun{
 altmetcom('id', '241939') # using altmetric.com article id
+altmetcom('doi', "10.1111/j.0269-8463.2005.00965.x")
 altmetcom('doi', '10.1038/480426a') # using doi
 altmetcom('pmid', '21148220') # using pubmed id
 altmetcom('arxiv', '1108.2455') # using arxiv id

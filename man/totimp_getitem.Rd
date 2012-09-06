@@ -1,10 +1,10 @@
 \name{totimp_getitem}
 \alias{totimp_getitem}
-\title{Assign a total-impact ID to one item if it doesn't have one yet.}
+\title{Get TotalImpact metrics on an identifier.}
 \usage{
   totimp_getitem(tiid = NA,
     url = "http://total-impact-core.herokuapp.com/item/",
-    curl = getCurlHandle())
+    getimage = NULL, curl = getCurlHandle())
 }
 \arguments{
   \item{tiid}{Total-impat ID for item.}
@@ -19,12 +19,12 @@
   Returns an item object, metrics that is.
 }
 \description{
-  Assign a total-impact ID to one item if it doesn't have
-  one yet.
+  Get TotalImpact metrics on an identifier.
 }
 \examples{
 \dontrun{
-totimp_getitem(tiid = "0df8aa0eb2c911e19e181231381b0f5a")
+tiid <- totimp_getid("doi/10.1111/j.1461-0248.2012.01776.x")
+totimp_getitem(tiid = tiid)
 }
 }
 
