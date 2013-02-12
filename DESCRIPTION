@@ -32,3 +32,5 @@ Collate:
     'totimp_postid.r'
     'totimp_postids.r'
     'altmetmaster.r'
+    'bitly_auth.r'
+    'zzz.r'

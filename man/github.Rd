@@ -2,8 +2,7 @@
 \alias{github}
 \title{Get GitHub metrics on a user or organization's repositories.}
 \usage{
-  github(userorg = NA, repo = NA, return_ = "show",
-    url = "https://api.github.com/repos/")
+  github(userorg = NA, repo = NA, return_ = "show")
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}

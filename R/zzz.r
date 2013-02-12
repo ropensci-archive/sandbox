@@ -1,0 +1,1 @@
+GitHubAuthCache <- new.env(hash=TRUE)
