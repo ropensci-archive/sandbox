@@ -16,7 +16,7 @@
 }
 \examples{
 \dontrun{
-github_sign <- github_auth()
+github_auth()
 }
 }
 

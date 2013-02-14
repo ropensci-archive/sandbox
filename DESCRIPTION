@@ -1,10 +1,9 @@
 Package: raltmet
 Version: 0.0.1
-Date: 2012-04-02
-Description: Programmatic interfaces to the
-    many altmetric data services on journal article
-    impacts.
-Title: Interface altmetric data services
+Date: 2013-02-15
+Description: Programmatic interfaces to various alternative metrics data
+    services around research impacts.
+Title: R interface to alternative metrics services
 License: C00
 Author: Scott Chamberlain
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
@@ -13,7 +12,11 @@ Depends:
     RCurl,
     XML,
     plyr,
-    RJSONIO
+    RJSONIO,
+    httr,
+    ggplot2,
+    lubridate,
+    reshape2
 Collate:
     'citedin.r'
     'totimp.r'
