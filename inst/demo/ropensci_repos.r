@@ -1,4 +1,6 @@
 # For all ropensci repos
+install_github("raltmet", "ropensci")
+
 library(raltmet); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite)
 github_auth()
 ropensci_repos <- github_allrepos(userorg = 'ropensci')
@@ -34,7 +36,7 @@ outdf_subset <- outdf_subset[!outdf_subset$.id %in% c("citeulike","challenge","d
 outdf_subset$.id <- tolower(outdf_subset$.id)
 
 # p <- 
-ggplot(dat, aes(date, value, colour=name)) + 
+ggplot(outdf_subset, aes(date, value, colour=name)) + 
 	geom_line() + 
 	scale_x_date(labels = date_format("%Y"),breaks = date_breaks("year")) + 
 	scale_y_log10() +
