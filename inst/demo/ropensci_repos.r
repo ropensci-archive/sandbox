@@ -45,28 +45,3 @@ ggplot(dat, aes(date, value, colour=name)) +
 		strip.text.y=element_text(angle=0, size=8), panel.grid.major=element_blank(),
 		panel.grid.minor=element_blank(),
 		legend.text=element_text(size = 8))
-# ggsave("plot.png")
-
-example avatar URL to embed in figure somehow:
-https://secure.gravatar.com/avatar/d9033fa816e09d79e44995e92f025cdd?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png
-
-# ##### network vis of commiters to each repos
-# library(raltmet); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite)
-# github_auth()
-
-# dat <- read.csv("~/github_ropensci_stats.csv")[,-1]
-# head(dat)
-
-# casted <- dcast(dat, .id + date + name ~ variable, fun.aggregate=sum, value.var="value")
-# head(casted)
-# casted$add_del <- casted$additions + casted$deletions
-# casted <- casted[,-c(2,4,5)]
-# names(casted)[1] <- "repo"
-# casted2 <- ddply(casted, .(repo, name), summarise, weight=log10(sum(add_del)+1))
-# is.finite()
-
-# library(picante)
-# casted2 <- data.frame(repo=casted2$repo, weight=casted2$weight, name=casted2$name)
-# mat <- sample2matrix(casted2)
-
-# plotweb(mat, method="cca")
