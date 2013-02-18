@@ -13,7 +13,7 @@
 #' github_repo(userorg = 'hadley', repo = 'ggplot2', return_ = 'forks')
 #' }
 #' @export
-github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = github_get_auth())
+github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = raltmet:::github_get_auth())
 {
 	url = "https://api.github.com/repos/"
 	url2 <- paste(url, userorg, '/', repo, sep='')
@@ -38,7 +38,7 @@ github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = git
 #' github_allrepos(userorg = 'ropensci')
 #' }
 #' @export
-github_allrepos <- function(userorg = NA, return_ = 'names', session = github_get_auth())
+github_allrepos <- function(userorg = NA, return_ = 'names', session = raltmet:::github_get_auth())
 {
   url = "https://api.github.com/orgs/"
   url2 <- paste(url, userorg, '/repos?per_page=100', sep='')
@@ -111,7 +111,7 @@ github_get_auth <- function()
 #' }
 #' @export
 github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
-	author = NULL, limit = 100, sha = NULL, timeplot = FALSE, session = github_get_auth())
+	author = NULL, limit = 100, sha = NULL, timeplot = FALSE, session = raltmet:::github_get_auth())
 {	
 	url = "https://api.github.com/repos/"
 	url2 <- paste0(url, userorg, '/', repo, '/commits')
