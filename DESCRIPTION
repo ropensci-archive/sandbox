@@ -1,13 +1,12 @@
-Package: raltmet
+Package: sandbox
 Version: 0.0.1
 Date: 2013-02-15
-Description: Programmatic interfaces to various alternative metrics data
-    services around research impacts.
-Title: R interface to alternative metrics services
+Description: Programmatic interfaces to various web services.
+Title: R interface to various web services
 License: C00
 Author: Scott Chamberlain
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
-URL: https://github.com/ropensci/raltmet
+URL: https://github.com/ropensci/sandbox
 Depends:
     RCurl,
     XML,
@@ -18,14 +17,6 @@ Depends:
     lubridate,
     reshape2
 Collate:
-    'citedin.r'
     'github.r'
-    'bitly_clicks.r'
-    'bitly_shorten.r'
-    'digg_user.r'
-    'gplus.r'
-    'bitly_expand.r'
-    'disqus.r'
-    'bitly_auth.r'
     'zzz.r'
     'stackexchange.r'
