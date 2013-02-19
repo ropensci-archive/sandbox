@@ -1,7 +1,7 @@
 # For all ropensci repos
-install_github("raltmet", "ropensci")
+install_github("sandbox", "ropensci")
 
-library(raltmet); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite)
+library(sandbox); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite)
 github_auth()
 ropensci_repos <- github_allrepos(userorg = 'ropensci')
 library(doMC)

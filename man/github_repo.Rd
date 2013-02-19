@@ -3,7 +3,7 @@
 \title{Get GitHub metrics on a user or organization's repositories.}
 \usage{
   github_repo(userorg = NA, repo = NA, return_ = "show",
-    session = raltmet:::github_get_auth())
+    session = sandbox:::github_get_auth())
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}

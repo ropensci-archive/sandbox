@@ -13,7 +13,7 @@
 #' github_repo(userorg = 'hadley', repo = 'ggplot2', return_ = 'forks')
 #' }
 #' @export
-github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = raltmet:::github_get_auth())
+github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = sandbox:::github_get_auth())
 {
 	url = "https://api.github.com/repos/"
 	url2 <- paste(url, userorg, '/', repo, sep='')
@@ -38,7 +38,7 @@ github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = ral
 #' github_allrepos(userorg = 'ropensci')
 #' }
 #' @export
-github_allrepos <- function(userorg = NA, return_ = 'names', session = raltmet:::github_get_auth())
+github_allrepos <- function(userorg = NA, return_ = 'names', session = sandbox:::github_get_auth())
 {
   url = "https://api.github.com/orgs/"
   url2 <- paste(url, userorg, '/repos?per_page=100', sep='')
@@ -69,7 +69,7 @@ github_auth <- function(client_id = NULL, client_secret = NULL)
 		github_urls <- oauth_endpoint(NULL, "authorize", "access_token", base_url = "https://github.com/login/oauth")
 		github_token <- oauth2.0_token(github_urls, github_app)
 		github_sign <- httr::sign_oauth2.0(github_token$access_token)
-		assign('github_sign', github_sign, envir=raltmet:::GitHubAuthCache)
+		assign('github_sign', github_sign, envir=sandbox:::GitHubAuthCache)
 		message("\n GitHub authentication was successful \n")
 		invisible(github_sign)
 	} else { NULL }
@@ -83,12 +83,12 @@ github_auth <- function(client_id = NULL, client_secret = NULL)
 #' @keywords internal
 github_get_auth <- function()
 {
-  if(!exists("github_sign", envir=raltmet:::GitHubAuthCache))
+  if(!exists("github_sign", envir=sandbox:::GitHubAuthCache))
     tryCatch(github_auth(), error= function(e) 
       stop("Requires authentication. 
       Are your credentials stored in options? 
       See github_auth function for details."))
-  get("github_sign", envir=raltmet:::GitHubAuthCache)
+  get("github_sign", envir=sandbox:::GitHubAuthCache)
 }
 
 #' Get GitHub metrics on a user or organization's repositories.
@@ -111,7 +111,7 @@ github_get_auth <- function()
 #' }
 #' @export
 github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
-	author = NULL, limit = 100, sha = NULL, timeplot = FALSE, session = raltmet:::github_get_auth())
+	author = NULL, limit = 100, sha = NULL, timeplot = FALSE, session = sandbox:::github_get_auth())
 {	
 	url = "https://api.github.com/repos/"
 	url2 <- paste0(url, userorg, '/', repo, '/commits')

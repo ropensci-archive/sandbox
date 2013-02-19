@@ -5,7 +5,7 @@
   github_commits(userorg = NA, repo = NA, since = NULL,
     until = NULL, author = NULL, limit = 100, sha = NULL,
     timeplot = FALSE,
-    session = raltmet:::github_get_auth())
+    session = sandbox:::github_get_auth())
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}
