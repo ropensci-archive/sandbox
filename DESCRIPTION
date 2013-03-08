@@ -11,12 +11,11 @@ Depends:
     RCurl,
     XML,
     plyr,
-    RJSONIO,
     httr,
     ggplot2,
     lubridate,
-    reshape2
+    reshape2,
+    rjson
 Collate:
     'github.r'
     'zzz.r'
-    'stackexchange.r'

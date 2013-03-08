@@ -93,7 +93,7 @@ github_get_auth <- function()
 
 #' Get GitHub metrics on a user or organization's repositories.
 #' 
-#' @import RJSONIO plyr ggplot2 httr lubridate reshape2
+#' @import plyr ggplot2 httr lubridate reshape2
 #' @param userorg User or organization GitHub name.
 #' @param repo Repository name.
 #' @param since Date to start at.
@@ -129,6 +129,7 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 			args <- compact(list(since = since, until = until, author = author, per_page = per_page, sha = sha))
 			out <- content(GET(url2, session, query=args))
 			sha <- out[[length(out)]]$sha; since = NULL; until = NULL
+			# sha <- out[[length(out)]]$sha
 			shavec[[iter_]] <- sha
 			if(shavec[[(length(shavec)-1)]] == shavec[[length(shavec)]]) { status = "done" } else
 			{
