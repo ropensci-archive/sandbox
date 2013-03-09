@@ -1,7 +1,7 @@
 # For all ropensci repos
 # install_github("sandbox", "ropensci")
 
-library(sandbox); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite); library(doMC); library(plyr)
+library(sandbox); library(httr); library(ggplot2); library(scales); library(reshape2); library(bipartite); library(doMC); library(plyr); library(ggthemes)
 # github_auth()
 ropensci_repos <- github_allrepos(userorg = 'ropensci')
 
@@ -10,7 +10,7 @@ github_commits_safe <- plyr::failwith(NULL,github_commits)
 out <- llply(ropensci_repos, function(x) github_commits_safe("ropensci", x, since='2009-01-01T', limit=500), .parallel=TRUE)
 
 # xxx<-github_commits_safe("ropensci", ropensci_repos[[1]], since='2009-01-01T', limit=500)
-# xxx<-github_commits("ropensci", "rfigshare", since='2009-01-01T', limit=10)
+# xxx<-github_commits("ropensci", "rfigshare", since='2009-01-01T', limit=500)
 
 names(out) <- ropensci_repos
 out2 <- compact(out)
