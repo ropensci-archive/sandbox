@@ -54,11 +54,13 @@ github_allrepos <- function(userorg = NA, return_ = 'names', session = sandbox::
 #' @import httr
 #' @param client_id Consumer key. can be supplied here or read from Options()
 #' @param client_secret Consumer secret. can be supplied here or read from Options()
+#' @param scope Comma separated list of scopes. One or more of: user, user:email, 
+#' 		user:follow, public_repo, repo, repo:status, delete_repo, notifications, gist
 #' @examples \dontrun{
 #' github_auth()
 #' }
 #' @export
-github_auth <- function(client_id = NULL, client_secret = NULL)
+github_auth <- function(client_id = NULL, client_secret = NULL, scope = NULL)
 {
 	if(!is.null(client_id)) {client_id=client_id} 
 		else {client_id = getOption("github_client_id", stop("Missing Github client id"))}
@@ -67,7 +69,7 @@ github_auth <- function(client_id = NULL, client_secret = NULL)
 	if(!exists("github_sign")){
 		github_app <- oauth_app("github", key=client_id, secret=client_secret)
 		github_urls <- oauth_endpoint(NULL, "authorize", "access_token", base_url = "https://github.com/login/oauth")
-		github_token <- oauth2.0_token(github_urls, github_app)
+		github_token <- oauth2.0_token(github_urls, github_app, scope = scope)
 		github_sign <- httr::sign_oauth2.0(github_token$access_token)
 		assign('github_sign', github_sign, envir=sandbox:::GitHubAuthCache)
 		message("\n GitHub authentication was successful \n")
@@ -81,10 +83,10 @@ github_auth <- function(client_id = NULL, client_secret = NULL)
 #' The authentication token 'oauth' is created by the github_auth() function.  
 #' This helper function lets all other functions load the authentication.  
 #' @keywords internal
-github_get_auth <- function()
+github_get_auth <- function(...)
 {
   if(!exists("github_sign", envir=sandbox:::GitHubAuthCache))
-    tryCatch(github_auth(), error= function(e) 
+    tryCatch(github_auth(...), error= function(e) 
       stop("Requires authentication. 
       Are your credentials stored in options? 
       See github_auth function for details."))
@@ -178,4 +180,44 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 			labs(x="", y="")
 		
 	}
+}
+
+#' Create a new github repo.
+#' 
+#' @import plyr ggplot2 httr lubridate reshape2
+#' @param userorg User or organization GitHub name.
+#' @param name Your new repo name. Required
+#' @param description Description of repo. Optional
+#' @param homepage Homepage for repo. Optional
+#' @param private Make the repo private? Creating private repositories requires a paid GitHub account.
+#' @param has_issues true to enable issues for this repository, false to disable them. 
+#' @param has_wiki true to enable the wiki for this repository, false to disable it
+#' @param has_downloads true to enable downloads for this repository, false to disable them. 
+#' @param team_id The id of the team that will be granted access to this repository. This is only valid when creating a repo in an organization.
+#' @param auto_init true to create an initial commit with empty README. Default is False.
+#' @param gitignore_template See \link{https://github.com/github/gitignore}
+#' @param session (optional) the authentication credentials from \code{\link{github_auth}}. 
+#'		If not provided, will attempt to load from cache as long as github_auth has been run. 
+#' @examples \dontrun{
+#' github_auth(scope='repo')
+#' github_create_repo(user='schamberlain', name='test', description='testing', homepage='http://schamberlain.github.com/scott/')
+#' }
+#' @export
+github_create_repo <- function(user=NULL, org=NULL, name=NULL, description=NULL, 
+	homepage=NULL, private=FALSE, has_issues=TRUE, has_wiki=TRUE, 
+	has_downloads=TRUE, team_id=NULL, auto_init=FALSE, 
+	gitignore_template=NULL)
+{
+	session = sandbox:::github_get_auth(scope='repo')
+
+	url = "https://api.github.com/"
+	if(!is.null(user))
+		url2 <- paste(url, user, '/repos', sep='')
+	if(!is.null(org))
+		url2 <- paste(url, 'orgs/', org, '/repos', sep='')
+	args <- compact(list(description=description, homepage=homepage, 
+		private=private, has_issues=has_issues, has_wiki=has_wiki, 
+		has_downloads=has_downloads, team_id=team_id, auto_init=auto_init, 
+		gitignore_template=gitignore_template))	
+	tt = content(GET(url2, session))
 }

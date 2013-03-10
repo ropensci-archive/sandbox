@@ -1,6 +1,7 @@
 export(github_allrepos)
 export(github_auth)
 export(github_commits)
+export(github_create_repo)
 export(github_repo)
 import(ggplot2)
 import(httr)
