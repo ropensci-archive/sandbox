@@ -3,10 +3,10 @@
 \title{Create a new github repo.}
 \usage{
   github_create_repo(user = NULL, org = NULL, name = NULL,
-    description = NULL, homepage = NULL, private = FALSE,
-    has_issues = TRUE, has_wiki = TRUE,
-    has_downloads = TRUE, team_id = NULL,
-    auto_init = FALSE, gitignore_template = NULL)
+    description = NULL, homepage = NULL, private = False,
+    has_issues = True, has_wiki = True,
+    has_downloads = True, team_id = NULL,
+    auto_init = False, gitignore_template = NULL)
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}

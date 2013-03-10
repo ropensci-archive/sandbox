@@ -104,7 +104,6 @@ github_get_auth <- function(...)
 #' @param limit Number of commits to return per call
 #' @param sha The commit sha to start returning commits from.
 #' @param timeplot Make a ggplot2 plot visualizing additions and deletions by user. Defaults to FALSE.
-#' @param session (optional) the authentication credentials from \code{\link{github_auth}}. If not provided, will attempt to load from cache as long as github_auth has been run.  
 #' @return data.frame or ggplot2 figure.
 #' @examples \dontrun{
 #' github_commits(userorg = 'ropensci', repo = 'rmendeley')
@@ -113,8 +112,9 @@ github_get_auth <- function(...)
 #' }
 #' @export
 github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
-	author = NULL, limit = 100, sha = NULL, timeplot = FALSE, session = sandbox:::github_get_auth())
+	author = NULL, limit = 100, sha = NULL, timeplot = FALSE)
 {	
+	session = sandbox:::github_get_auth()
 	url = "https://api.github.com/repos/"
 	url2 <- paste0(url, userorg, '/', repo, '/commits')
 	if(limit > 100) {per_page = 100} else {per_page = limit}
@@ -182,9 +182,61 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 	}
 }
 
+
+#' Create time series bar plot.
+#' 
+#' @import plyr ggplot2 reshape2 ggthemes
+#' @param data Data set to plot with.
+#' @examples \dontrun{
+#' # Run with example data set (commits from the ropensci organization account)
+#' github_timeseries()
+#' 
+#' # Get your own data
+#' github_auth()
+#' mydat <- llply(c('ggplot2','plyr','httr'), function(x) github_commits(userorg='hadley',repo=x,since='2009-01-01T'))
+#' mydat <- ldply(mydat)
+#' github_timeseries(mydat)
+#' }
+#' @export
+github_timeseries <- function(data = NULL)
+{	
+	data(ropensci_commits) # load data set
+	ropensci_commits$date <- as.Date(as.character(ropensci_commits$date))
+	dframe <- ropensci_commits[!ropensci_commits$.id %in% c("citeulike", "challenge", "docs", "ropensci-book", 
+		"usecases", "textmine", "usgs", "ropenscitoolkit", "neotoma", "rEWDB", "rgauges", 
+		"rodash", "ropensci.github.com", "ROAuth"), ]
+	dframe$.id <- tolower(dframe$.id)
+	dframe <- ddply(dframe, .(.id, date), summarise, value = sum(value))
+
+	mindates <- llply(unique(dframe$.id), function(x) min(dframe[dframe$.id == x, "date"]))
+	names(mindates) <- unique(dframe$.id)
+	mindates <- sort(do.call(c, mindates))
+	dframe$.id <- factor(dframe$.id, levels = names(mindates))
+
+	ggplot(dframe, aes(date, value, fill = .id)) + 
+		geom_bar(stat = "identity", width = 0.5) + 
+		geom_rangeframe(sides = "b", colour = "grey") + 
+		theme_bw(base_size = 9) + 
+		scale_x_date(labels = date_format("%Y"), breaks = date_breaks("year")) + 
+		scale_y_log10() + 
+		facet_grid(.id ~ .) + 
+		labs(x = "", y = "") + 
+		theme(axis.text.y = element_blank(), 
+			axis.text.x = element_text(colour = "black"), 
+			axis.ticks.y = element_blank(), 
+			strip.text.y = element_text(angle = 0, size = 8, ), 
+			strip.background = element_rect(size = 0), 
+			panel.grid.major = element_blank(), 
+			panel.grid.minor = element_blank(), 
+			legend.text = element_text(size = 8), 
+			legend.position = "none", 
+			panel.border = element_blank())
+}
+
+
 #' Create a new github repo.
 #' 
-#' @import plyr ggplot2 httr lubridate reshape2
+#' @import plyr httr
 #' @param userorg User or organization GitHub name.
 #' @param name Your new repo name. Required
 #' @param description Description of repo. Optional
@@ -204,21 +256,45 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 #' }
 #' @export
 github_create_repo <- function(user=NULL, org=NULL, name=NULL, description=NULL, 
-	homepage=NULL, private=FALSE, has_issues=TRUE, has_wiki=TRUE, 
-	has_downloads=TRUE, team_id=NULL, auto_init=FALSE, 
+	homepage=NULL, private=False, has_issues=True, has_wiki=True, 
+	has_downloads=True, team_id=NULL, auto_init=False, 
 	gitignore_template=NULL)
 {
+	message("this function doesn't currently work")
 	session = sandbox:::github_get_auth(scope='repo')
 
 	url = "https://api.github.com/"
 	if(!is.null(user))
-		url2 <- paste(url, user, '/repos', sep='')
+		# url2 <- paste(url, user, '/repos', sep='')
+		url2 <- paste(url, 'user/repos', sep='')
 	if(!is.null(org))
 		url2 <- paste(url, 'orgs/', org, '/repos', sep='')
-	args <- compact(list(description=description, homepage=homepage, 
+	args <- compact(list(name=name, description=description, homepage=homepage, 
 		private=private, has_issues=has_issues, has_wiki=has_wiki, 
 		has_downloads=has_downloads, team_id=team_id, auto_init=auto_init, 
 		gitignore_template=gitignore_template))	
-	tt = content(GET(url2, session))
+	tt = content(POST(url2, config=session, body=args))
 	return( tt )
+}
+
+#' Coerces data.frame columns to the specified classes
+#' 
+#' @param d A data.frame.
+#' @param colClasses A vector of column attributes, one of: 
+#'    numeric, factor, character, etc.
+#' @examples
+#' dat <- data.frame(xvar = seq(1:10), yvar = rep(c("a","b"),5)) # make a data.frame
+#' str(dat)
+#' str(colClasses(dat, c("factor","factor")))
+#' @export
+colClasses <- function(d, colClasses) {
+  colClasses <- rep(colClasses, len=length(d))
+  d[] <- lapply(seq_along(d), function(i) switch(colClasses[i], 
+      numeric=as.numeric(d[[i]]), 
+      character=as.character(d[[i]]), 
+      Date=as.Date(d[[i]], origin='1970-01-01'), 
+      POSIXct=as.POSIXct(d[[i]], origin='1970-01-01'), 
+      factor=as.factor(d[[i]]),
+      as(d[[i]], colClasses[i]) ))
+  d
 }
