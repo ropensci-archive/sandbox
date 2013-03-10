@@ -220,4 +220,5 @@ github_create_repo <- function(user=NULL, org=NULL, name=NULL, description=NULL,
 		has_downloads=has_downloads, team_id=team_id, auto_init=auto_init, 
 		gitignore_template=gitignore_template))	
 	tt = content(GET(url2, session))
+	return( tt )
 }
