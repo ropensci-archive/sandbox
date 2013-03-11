@@ -193,7 +193,7 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 #' 
 #' # Get your own data
 #' github_auth()
-#' mydat <- llply(c('ggplot2','plyr','httr'), function(x) github_commits(userorg='hadley',repo=x,since='2009-01-01T'))
+#' mydat <- llply(c('ggplot2','plyr','httr'), function(x) github_commits(userorg='hadley',repo=x,limit=500))
 #' mydat <- ldply(mydat)
 #' github_timeseries(mydat)
 #' }
