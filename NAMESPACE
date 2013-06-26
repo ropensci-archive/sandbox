@@ -1,3 +1,4 @@
+export(colClasses)
 export(github_allrepos)
 export(github_auth)
 export(github_commits)

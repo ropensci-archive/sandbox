@@ -3,21 +3,32 @@
 #' @import httr
 #' @param userorg User or organization GitHub name.
 #' @param repo Repository name.
-#' @param session (optional) the authentication credentials from \code{\link{github_auth}}. If not provided, will attempt to load from cache as long as github_auth has been run. 
 #' @param return_ what to return, one of: show (raw data), allstats, watchers, open_issues, or forks
 #' @return json
 #' @examples \dontrun{
+#' github_auth()
+#' options(useragent='ropensci')
 #' github_repo(userorg = 'ropensci', repo = 'rmendeley')
 #' github_repo(userorg = 'hadley', repo = 'ggplot2')
 #' github_repo(userorg = 'hadley', repo = 'ggplot2', 'allstats')
 #' github_repo(userorg = 'hadley', repo = 'ggplot2', return_ = 'forks')
 #' }
 #' @export
-github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = sandbox:::github_get_auth())
+github_repo <- function(userorg = NA, repo = NA, return_ = 'show')
 {
+  useragent <- getOption('useragent')
+  if(is.null(useragent))
+    stop('You must provide a User-Agent string')
+  
+  access_token <- getOption('github_token')
+  if(is.null(access_token))
+    stop('You must authenticate with Github first, see github_auth()')
+  
 	url = "https://api.github.com/repos/"
 	url2 <- paste(url, userorg, '/', repo, sep='')
-	tt = content(GET(url2, session))
+  args <- list(access_token=access_token)
+  tt = content(GET(url2, add_headers('User-Agent' = useragent), query=args))
+# 	tt = content(GET(url2, session))
 	if(return_=='show'){tt} else
 	if(return_=='allstats'){
     	list('watchers'=tt$watchers, 'open_issues'=tt$open_issues, 
@@ -31,18 +42,36 @@ github_repo <- function(userorg = NA, repo = NA, return_ = 'show', session = san
 #' 
 #' @import httr
 #' @param userorg User or organization GitHub name.
+#' @param type One of user or org (defaults to org)
 #' @param repo Repository name.
-#' @param session (optional) the authentication credentials from \code{\link{github_auth}}. If not provided, will attempt to load from cache as long as github_auth has been run. 
+#' @param per_page (optional) Number of results to return
 #' @return Vector of names or repos for organization or user.
 #' @examples \dontrun{
+#' github_auth()
+#' options(useragent='ropensci')
 #' github_allrepos(userorg = 'ropensci')
 #' }
 #' @export
-github_allrepos <- function(userorg = NA, return_ = 'names', session = sandbox:::github_get_auth())
+github_allrepos <- function(userorg = NA, type = 'org', return_ = 'names', per_page = 100)
 {
-  url = "https://api.github.com/orgs/"
-  url2 <- paste(url, userorg, '/repos?per_page=100', sep='')
-  tt = content(GET(url2, session))
+  useragent <- getOption('useragent')
+  if(is.null(useragent))
+    stop('You must provide a User-Agent string')
+  
+  access_token <- getOption('github_token')
+  if(is.null(access_token))
+    stop('You must authenticate with Github first, see github_auth()')
+  
+  url = "https://api.github.com/"
+  if(type == 'org'){
+    url2 <- paste0(url, 'orgs/', userorg, '/repos')
+  } else
+  { url2 <- paste0(url, 'users/', userorg, '/repos') }
+  args <- list(access_token=access_token, per_page=per_page)
+  tt = content(GET(url2, add_headers('User-Agent' = useragent), query=args))
+#   url2 <- paste(url, userorg, '/repos?per_page=100', sep='')
+#   tt = content(GET(url2, config=session, user_agent('rOpenSci')))
+#   tt = content(GET(url2, user_agent('rOpenSci')))
   if(return_=='show'){tt} else
     if(return_=='names'){
         sapply(tt, function(x) x$name)
@@ -70,10 +99,11 @@ github_auth <- function(client_id = NULL, client_secret = NULL, scope = NULL)
 		github_app <- oauth_app("github", key=client_id, secret=client_secret)
 		github_urls <- oauth_endpoint(NULL, "authorize", "access_token", base_url = "https://github.com/login/oauth")
 		github_token <- oauth2.0_token(github_urls, github_app, scope = scope)
-		github_sign <- httr::sign_oauth2.0(github_token$access_token)
-		assign('github_sign', github_sign, envir=sandbox:::GitHubAuthCache)
-		message("\n GitHub authentication was successful \n")
-		invisible(github_sign)
+    options(github_token = github_token$access_token)
+# 		github_sign <- httr::sign_oauth2.0(github_token$access_token)
+# 		assign('github_sign', github_sign, envir=sandbox:::GitHubAuthCache)
+# 		message("\n GitHub authentication was successful \n")
+# 		invisible(github_sign)
 	} else { NULL }
 }
 
@@ -85,12 +115,13 @@ github_auth <- function(client_id = NULL, client_secret = NULL, scope = NULL)
 #' @keywords internal
 github_get_auth <- function(...)
 {
-  if(!exists("github_sign", envir=sandbox:::GitHubAuthCache))
-    tryCatch(github_auth(...), error= function(e) 
-      stop("Requires authentication. 
-      Are your credentials stored in options? 
-      See github_auth function for details."))
-  get("github_sign", envir=sandbox:::GitHubAuthCache)
+#   if(!exists("github_sign", envir=sandbox:::GitHubAuthCache))
+#     tryCatch(github_auth(...), error= function(e) 
+#       stop("Requires authentication. 
+#       Are your credentials stored in options? 
+#       See github_auth function for details."))
+#   get("github_sign", envir=sandbox:::GitHubAuthCache)
+  message("deprecated")
 }
 
 #' Get GitHub metrics on a user or organization's repositories.
@@ -108,13 +139,21 @@ github_get_auth <- function(...)
 #' @examples \dontrun{
 #' github_commits(userorg = 'ropensci', repo = 'rmendeley')
 #' github_commits(userorg = 'ropensci', repo = 'rfigshare', since='2009-01-01T')
-#' github_commits(userorg = 'ropensci', repo = 'taxize_', since='2009-01-01T', limit=100, timeplot=TRUE)
+#' github_commits(userorg = 'ropensci', repo = 'taxize_', since='2009-01-01T', limit=500, timeplot=TRUE)
 #' }
 #' @export
 github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 	author = NULL, limit = 100, sha = NULL, timeplot = FALSE)
 {	
-	session = sandbox:::github_get_auth()
+# 	session = sandbox:::github_get_auth()
+  useragent <- getOption('useragent')
+  if(is.null(useragent))
+    stop('You must provide a User-Agent string')
+  
+  access_token <- getOption('github_token')
+  if(is.null(access_token))
+    stop('You must authenticate with Github first, see github_auth()')
+  
 	url = "https://api.github.com/repos/"
 	url2 <- paste0(url, userorg, '/', repo, '/commits')
 	if(limit > 100) {per_page = 100} else {per_page = limit}
@@ -128,8 +167,10 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 		while(status == "notdone"){
 			iter <- iter + 1
 			iter_ <- iter_ + 1
-			args <- compact(list(since = since, until = until, author = author, per_page = per_page, sha = sha))
-			out <- content(GET(url2, session, query=args))
+			args <- compact(list(since = since, until = until, author = author, per_page = per_page, sha = sha, access_token=access_token))
+# 			out <- content(GET(url2, session, query=args))
+# 			tt = content(GET(url2, user_agent('rOpenSci'), query=args))
+			tt <- content(GET(url2, add_headers('User-Agent' = useragent), query=args))
 			sha <- out[[length(out)]]$sha; since = NULL; until = NULL
 			# sha <- out[[length(out)]]$sha
 			shavec[[iter_]] <- sha
@@ -138,16 +179,20 @@ github_commits <- function(userorg = NA, repo = NA, since = NULL, until = NULL,
 				tt[[iter]] <- out
 			}
 		}
+		
 		tt <- do.call(c, tt)
 	} else
 	{
-		args <- compact(list(since = since, until = until, author = author, per_page = per_page, sha = sha))
-		tt = content(GET(url2, session, query=args))
+		args <- compact(list(since = since, until = until, author = author, per_page = per_page, sha = sha, access_token=access_token))
+		tt <- content(GET(url2, add_headers('User-Agent' = useragent), query=args))
+# 		tt = content(GET(url2, session, query=args))
+# 		tt = content(GET(url2, user_agent('rOpenSci'), query=args))
 	}
 	
 	shas <- unique(laply(tt, function(x) x$sha))
 	getstats <- function(x){
-		tempist <- content(GET(paste0(url2,"/",x), session))
+# 		tempist <- content(GET(paste0(url2,"/",x), session))
+		tempist <- content(GET(paste0(url2,"/",x), user_agent('rOpenSci')))
 		c(tempist$sha, tempist$stats[[2]], tempist$stats[[3]])
 	}
 	stats <- llply(shas, getstats)
@@ -252,29 +297,39 @@ github_timeseries <- function(data = NULL)
 #'		If not provided, will attempt to load from cache as long as github_auth has been run. 
 #' @examples \dontrun{
 #' github_auth(scope='repo')
+#' options(useragent='ropensci')
+#' github_create_repo(user='schamberlain', name='test')
+#' 
 #' github_create_repo(user='schamberlain', name='test', description='testing', homepage='http://schamberlain.github.com/scott/')
 #' }
 #' @export
 github_create_repo <- function(user=NULL, org=NULL, name=NULL, description=NULL, 
-	homepage=NULL, private=False, has_issues=True, has_wiki=True, 
-	has_downloads=True, team_id=NULL, auto_init=False, 
+	homepage=NULL, private='False', has_issues='True', has_wiki='True', 
+	has_downloads='True', team_id=NULL, auto_init='False', 
 	gitignore_template=NULL)
 {
 	message("this function doesn't currently work")
-	session = sandbox:::github_get_auth(scope='repo')
-
-	url = "https://api.github.com/"
-	if(!is.null(user))
-		# url2 <- paste(url, user, '/repos', sep='')
-		url2 <- paste(url, 'user/repos', sep='')
-	if(!is.null(org))
-		url2 <- paste(url, 'orgs/', org, '/repos', sep='')
-	args <- compact(list(name=name, description=description, homepage=homepage, 
-		private=private, has_issues=has_issues, has_wiki=has_wiki, 
-		has_downloads=has_downloads, team_id=team_id, auto_init=auto_init, 
-		gitignore_template=gitignore_template))	
-	tt = content(POST(url2, config=session, body=args))
-	return( tt )
+# 	session = sandbox:::github_get_auth(scope='repo')
+#   useragent <- getOption('useragent')
+#   if(is.null(useragent))
+#     stop('You must provide a User-Agent string')
+#   
+#   access_token <- getOption('github_token')
+#   if(is.null(access_token))
+#     stop('You must authenticate with Github first, see github_auth()')
+#   
+# 	url = "https://api.github.com/"
+# 	if(!is.null(user))
+# 		# url2 <- paste(url, user, '/repos', sep='')
+# 		url2 <- paste0(url, 'user/repos?access_token=', access_token)
+# 	if(!is.null(org))
+# 		  url2 <- paste0(url, 'orgs/', org, '/repos?access_token=', access_token)
+# 	args <- compact(list(name=name, description=description, homepage=homepage, 
+# 		private=private, has_issues=has_issues, has_wiki=has_wiki, 
+# 		has_downloads=has_downloads, team_id=team_id, auto_init=auto_init, 
+# 		gitignore_template=gitignore_template, access_token=access_token))	
+#   tt <- content(POST(url2, config=add_headers('User-Agent' = useragent), body=args))
+# 	return( tt )
 }
 
 #' Coerces data.frame columns to the specified classes

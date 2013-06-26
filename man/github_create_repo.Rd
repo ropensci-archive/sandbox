@@ -3,10 +3,10 @@
 \title{Create a new github repo.}
 \usage{
   github_create_repo(user = NULL, org = NULL, name = NULL,
-    description = NULL, homepage = NULL, private = False,
-    has_issues = True, has_wiki = True,
-    has_downloads = True, team_id = NULL,
-    auto_init = False, gitignore_template = NULL)
+    description = NULL, homepage = NULL, private = "False",
+    has_issues = "True", has_wiki = "True",
+    has_downloads = "True", team_id = NULL,
+    auto_init = "False", gitignore_template = NULL)
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}
@@ -50,6 +50,9 @@
 \examples{
 \dontrun{
 github_auth(scope='repo')
+options(useragent='ropensci')
+github_create_repo(user='schamberlain', name='test')
+
 github_create_repo(user='schamberlain', name='test', description='testing', homepage='http://schamberlain.github.com/scott/')
 }
 }

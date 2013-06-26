@@ -2,18 +2,12 @@
 \alias{github_repo}
 \title{Get GitHub metrics on a user or organization's repositories.}
 \usage{
-  github_repo(userorg = NA, repo = NA, return_ = "show",
-    session = sandbox:::github_get_auth())
+  github_repo(userorg = NA, repo = NA, return_ = "show")
 }
 \arguments{
   \item{userorg}{User or organization GitHub name.}
 
   \item{repo}{Repository name.}
-
-  \item{session}{(optional) the authentication credentials
-  from \code{\link{github_auth}}. If not provided, will
-  attempt to load from cache as long as github_auth has
-  been run.}
 
   \item{return_}{what to return, one of: show (raw data),
   allstats, watchers, open_issues, or forks}
@@ -27,6 +21,8 @@
 }
 \examples{
 \dontrun{
+github_auth()
+options(useragent='ropensci')
 github_repo(userorg = 'ropensci', repo = 'rmendeley')
 github_repo(userorg = 'hadley', repo = 'ggplot2')
 github_repo(userorg = 'hadley', repo = 'ggplot2', 'allstats')
