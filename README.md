@@ -1,13 +1,6 @@
+[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](http://www.repostatus.org/badges/latest/unsupported.svg)](http://www.repostatus.org/#unsupported)
+
 # sandbox #
-
-Install using install_github within Hadley's devtools package.
-
-```R
-install.packages("devtools")
-require(devtools)
-install_github("sandbox", "ropensci")
-require(sandbox)
-```
 
 A set of functions to play around with various web data sources:
 
