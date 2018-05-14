@@ -1,13 +1,6 @@
+[![Project Status: Abandoned – Initial development has started, but there has not yet been a stable, usable release; the project has been abandoned and the author(s) do not intend on continuing development.](http://www.repostatus.org/badges/latest/abandoned.svg)](http://www.repostatus.org/#abandoned)
+
 # sandbox #
-
-Install using install_github within Hadley's devtools package.
-
-```R
-install.packages("devtools")
-require(devtools)
-install_github("sandbox", "ropensci")
-require(sandbox)
-```
 
 A set of functions to play around with various web data sources:
 
